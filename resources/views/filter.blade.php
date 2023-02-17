@@ -20,9 +20,9 @@
     <div class="container my-4">
         <h1 class="text-center">Car Demand Filter</h1>
         <hr>
-
+        <button id="nextStep">Next Step</button>
         <form id="filter-form" onsubmit="event.preventDefault();" class="mb-4">
-            <div class="row">
+            <div class="row step" id="step1">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="supplier">Supplier</label>
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row step" id="step2">
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="car_model">Car Model</label>
@@ -90,38 +90,58 @@
                     </div>
                 </div>
             </div>
-            <table class="table" id="editable-table">
-                <thead>
-                    @foreach($months as $month)
-                    <th>{{ $month }}</th>
-                    @endforeach
-                </thead>
-                <tbody>
-                    <tr id="emptyrow">
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                        <td contenteditable></td>
-                    </tr>
-                    <tr id="buttonrow">
-                        <td colspan="2"><button id="add-row" class="btn btn-success">Add Row</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row step" id="step3">
+                <table class="table" id="editable-table">
+                    <thead>
+                        @foreach($months as $month)
+                        <th>{{ $month }}</th>
+                        @endforeach
+                    </thead>
+                    <tbody>
+                        <tr id="emptyrow">
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                            <td contenteditable></td>
+                        </tr>
+                        <tr id="buttonrow">
+                            <td colspan="2"><button id="add-row" class="btn btn-success">Add Row</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
             <script>
                 $(document).ready(function() {
+
+                    var currentStep = 1;
+                    $('.step').hide();
+                    $('#step1').show();
+
+                    $('#nextStep').click(function() {
+                        if($('#steering_type').val() && currentStep == 1){   
+                            $('.step').hide();
+                            $('#step' + (++currentStep)).show();
+                        }
+                        else if($('#color').val() && currentStep == 2){   
+                            console.log(currentStep);
+                            $('.step').hide();
+                            $('#step' + (++currentStep)).show();
+                            $('#nextStep').hide();
+                        }
+                    });
+
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
